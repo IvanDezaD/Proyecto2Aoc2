@@ -12,6 +12,8 @@
 \usepackage{grffile}
 \usepackage{natbib} % Paquete para estilo de citas
 \usepackage{tabularx}
+\usepackage{changepage}
+\usepackage{amsmath}
 
 %Definitions
 \definecolor{lightgray}{gray}{0.5}
@@ -38,7 +40,7 @@
 \fancyhf{} % Limpia los encabezados y pies de página predeterminados
 \renewcommand{\footrulewidth}{0.4pt}
 \fancyfoot[L]{\textit{AOC - Proyecto 2}} % Encabezado izquierdo con el título del proyecto
-\fancyhead[L]{\textit{Iván Deza, Víctor Martínez}}
+\fancyhead[L]{\textit{Iván Deza, Víctor Martinez}}
 \fancyfoot[R]{\thepage} % Pie de página centrado con el número de página
 \renewcommand{\footrule}{\hbox to\headwidth{\color{lightgray}\leaders\hrule height \headrulewidth\hfill}}
 \renewcommand{\headrule}{\hbox to\headwidth{\color{lightgray}\leaders\hrule height \headrulewidth\hfill}}
@@ -86,18 +88,49 @@
 El proyecto en cuestión trata de el diseño e implementación de una unidad de control que sea capaz de controlar una jerarquía de memoria
 donde tenemos: una memoria cache, de rápido acceso, una memoria Scratch de datos, también de acceso rápido, además de una memoria principal más lenta que las anteriores mencionadas.
 Esta jerarquía de memoria viene conectada vía un bus, de tipo semisincrono, que actúa de árbitro entre todas las memorias de la jerarquía. Además la política de funcionamiento de la cache es \textbf{Fetch on Write Miss} (traemos el bloque que necesitamos cuando hay un fallo de escritura)
-y \textbf{Copy Back} (no actualizamos escrituras a la memoria principal instantaneamente si no cuando hay un fallo y nos deshacemos de ese bloque). \par
+y \textbf{Copy Back} (no actualizamos escrituras a la memoria principal instantáneamente si no cuando hay un fallo y nos deshacemos de ese bloque). \par
 Esta jerarquía de memoria se introduce en el chip MIPS del proyecto número 1, al cual se le ha cambiado el MD subsystem por uno más complejo, el cual incluye una jerarquía de memoria.\par
-Además de esto, en el apartado 8.1, hemos comentado como funciona un ataque de canal lateral a una memoria cache, demostrado su funcionamiento y creado una prueba de concepto para este tipo de ataques. Tambien se propone una estrategia para mitigar esta vulnerabilidad.
+Además de esto, en el apartado 8.1, hemos comentado como funciona un ataque de canal lateral a una memoria cache, demostrado su funcionamiento y creado una prueba de concepto para este tipo de ataques. También se propone una estrategia para mitigar esta vulnerabilidad.
 
 \section{Diagrama de Estados de la UC}
-\lipsum[1-3] % Texto de relleno
+Aquí se adjunta una imagen con el diagrama de estados de la unidad de control que hemos implementado. Este diseño tiene política de escritura \textbf{Copy Back} la cual consiste
+en que no se escribe en memoria principal todos los cambios que se han ido haciendo durante el programa, si no que se actualiza solo en el momento en el que se bloque se expulsa
+de la memoria cache. Este hace que la carga de trabajo de entrada salida sea menor ya que reducimos en gran medid los accesos de escritura a memoria principal. Además, ya que la 
+memoria cache es más rápida que la memoria principal, hace que se reduzca el tiempo de ejecución de ciertas secuencias de instrucciones como bucles.\par
+Otra politica utilizada es la denominada \textbf{Fetch on Write Miss}, la cual consiste en que traemos a cache los datos en caso de que halla un fallo de escritura. Esto complementa
+muy bien la política copy back y hace que el rendimiento de la cache sea superior a otro conjuntos de politicas como Write Through junto a una política que implemente Fetch on Write miss.\par
 
 \section{Descomposición de Dirección}
 \lipsum[4-6] % Texto de relleno
 
 \section{Análisis de Latencias}
-\lipsum[6-8] %texto de relleno
+Para medir el rendimiento de la cache hemos utilizado una medición en ciclos, ya que es una medida de tiempo constante. Podríamos comparar la ejecucion del mismo programa 
+en un procesador que no implementa cache y con uno que si lo hace. También podriamos medir los ciclos de reloj que espera la cpu a tener el dato listo. Factores a tener en cuenta 
+sería el numero de fallos tanto en lectura como escritura ya que son estos los que hacen que nuestro procesador tenga que esperar al dato o instrucción, ralentizando la ejecución.\par
+Una manera sencilla de calcularlo sería\par
+
+\begin{adjustwidth}{2cm}{2cm}
+\vspace{15pt}
+Tiempo de CPU = (Ciclos de reloj de ejecucion-CPU + Ciclos de reloj de detención memoria) · Duración de ciclo de reloj
+\vspace{15pt}
+\end{adjustwidth}
+
+Para desgeneralizar el asunto podemos separar esta formula en varias para calcular partes individuales necesarias como serían los ciclos de detencion de memoria:
+
+\begin{adjustwidth}{2cm}{2cm}
+\vspace{15pt}
+  Ciclos de reloj de detencion de memoria = $\frac{\text{Acceso a Memoria}}{\text{Programa}}$ · Frecuencia de fallos · Penalización de fallos
+\vspace{15pt}
+\end{adjustwidth}
+
+Finalmente llegamos a la conclusión de que:
+
+\begin{adjustwidth}{2cm}{2cm}
+\vspace{15pt}
+  Tiempo de CPU = IC · ( CPI_{1} + $\frac{\text{Accesos a Memoria}}{\text{instrucción}}$ · Frecuencia de fallos · Penalización de fallos) · Tiempo de ciclo de reloj
+\vspace{15pt}
+\end{adjustwidth}
+
 \subsection{Ciclos Efectivos}
 \lipsum[9-10]
 
@@ -110,9 +143,9 @@ Además de esto, en el apartado 8.1, hemos comentado como funciona un ataque de 
 \section{Apartados Opcionales}
 \subsection{Hacking Ético}
 En este apartado hemos querido enseñar como podíamos realizar un ataque DOS (denial of service o denegación de servicio), si sabemos como esta estructurada la memoria cache de un procesador.\par
-Para detectarlo, podríamos usar un contrador de Write Missess, y que si ese valor es igual o muy cercano al numero de writes que se esta haciendo, saltar una señal alertando que posiblemente este tipo de ataque esta tendiendo lugar. 
+Para detectarlo, podríamos usar un contador de Write Missess, y que si ese valor es igual o muy cercano al numero de writes que se esta haciendo, saltar una señal alertando que posiblemente este tipo de ataque esta tendiendo lugar. 
 Para solucionar esto lo que podríamos hacer es implementar un bit de lock, de manera que ciertas instrucciones que podamos marcar, no abandonarían nunca la cache. Mejorando el rendimiento del procesador frente a este tipo de ataques. Otra solución podría ser mandar un 
-halt de manera que terminaríamos este proceso (en caso de que la cpu sea uniciclo). 
+halt de manera que terminaríamos este proceso (en caso de que la procesador sea uniciclo). 
 Información sobre este tipo de ataque: \cite{BackCache}.
 
 \newpage
@@ -143,7 +176,7 @@ Información sobre este tipo de ataque: \cite{BackCache}.
 \begin{figure}[htbp]
   \centering
   \includegraphics[page=1, width=0.8\textwidth, clip]{assets/AOC2_2024_Esquemas_Proy2.pdf}
-  \caption{Esquema y señales principales del nuevo IO MD subsytem y de su bus. Se pide dise˜nar la
+  \caption{Esquema y señales principales del nuevo IO MD subsytem y de su bus. Se pide diseñar la
 Unidad de Control de la MC}
   \label{fig:imagen}
 \end{figure}
