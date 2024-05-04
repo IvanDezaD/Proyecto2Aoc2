@@ -1,0 +1,37 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sat Apr  6 15:28:02 2024
+[*]
+[dumpfile] "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/test.ghw"
+[dumpfile_mtime] "Sat Apr  6 15:27:28 2024"
+[dumpfile_size] 56793
+[savefile] "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/testbench.gtkw"
+[timestart] 0
+[size] 1850 1016
+[pos] -51 -51
+*-24.798395 45000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.testbench.
+[treeopen] top.testbench.uut.
+[sst_width] 273
+[signals_width] 374
+[sst_expanded] 1
+[sst_vpaned_height] 528
+@28
+top.testbench.clk
+top.testbench.reset
+@200
+---- UC ----
+@c00200
+-top.testbench.uut.uc_seg.ir_op_code[5:0]
+@1401200
+-group_end
+@200
+---- MEM ---
+---- REG ---
+---- ID ---
+---- EX ---
+---- MEM ---
+---- WB ---
+[pattern_trace] 1
+[pattern_trace] 0
