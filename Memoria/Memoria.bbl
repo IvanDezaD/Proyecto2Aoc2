@@ -1,0 +1,19 @@
+\begin{thebibliography}{}
+
+\bibitem[Hennessy and Patterson, 1993]{HennyPatt}
+Hennessy, J.~L. and Patterson, D.~A. (1993).
+\newblock {\em Arquitectura de Computadores \, un enfoque cuantitativo}.
+\newblock McGrawHill.
+
+\bibitem[Rivoire, 1999]{RivoireCacheWrite}
+Rivoire, S. (1999).
+\newblock Cache write policies.
+\newblock Consultado el 5 de mayo de 2024.
+
+\bibitem[Whang, 2024]{BackCache}
+Whang, Q. (2024).
+\newblock Backcache: Mitigating contention-based cache timing attacks by hiding
+  cache line evictions.
+\newblock pages 1--15, Wuhan, 430072, China. Wuhan University.
+
+\end{thebibliography}

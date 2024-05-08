@@ -95,7 +95,7 @@ type error_type is (memory_error, No_error);
 signal state, next_state : state_type; 
 signal error_state, next_error_state : error_type; 
 signal last_word_block: STD_LOGIC; --se activa cuando se est� pidiendo la �ltima palabra de un bloque
-signal one_word: STD_LOGIC; --se activa cuando s�lo se quiere transferir una palabra
+signal one_word: STD_LOGIC; --se activa cuando s�lo se quiere transferir una palabra ? sobre todo para transferencias de tipo mc->MIPS y viceversa (creemos que no es necesaria)
 signal count_enable: STD_LOGIC; -- se activa si se ha recibido una palabra de un bloque para que se incremente el contador de palabras
 signal hit: std_logic;
 signal palabra_UC : STD_LOGIC_VECTOR (1 downto 0);
@@ -172,8 +172,16 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 	send_dirty <= '0';
 	Update_dirty <= '0';
 	Block_copied_back <= '0';
-		-- ! Importante, la conexion del bus es entre MC, Arbitro, IO Mater, Md, Md Scratch asi que la logica de este es cuando exista comunicacion entre estos componentes, entre MIPS y MC no se usa el bus, va directo		
-        -- Estado Inicio          
+		-- ! Importante, la conexion del bus es entre MC, Arbitro, IO Master, Md, Md Scratch asi que la logica de este es cuando exista comunicacion entre estos componentes, entre MIPS y MC no se usa el bus, va directo
+		-- ! Además hay una MC especial de Datos que es la MD_Scratch asi que los datos no tienen que ir a MC
+		-- ! El bus es Multiplexado, lo que quiere decir que addr y data se envia en la misma linea de manera secuencial 		
+		-- ! Las 3 fases de la transferencia son:
+		-- ! 	Arbitraje: solicitar bus a traves de BUS_req, y si lo tenemos disponible, el arbitro responde con BUS_grant, si no toca esperar ( volvemos a este estado de la UC)
+		-- ! 	Dirección: despues de que bus_grant este activo, comienza la transferencia de datos. Se activa Bus_Frame y se envía la dirección (Bus_addr_data) y ademas el tipo de operación (Bus_Rd_Wr = 0 para lecturas y '1' para escrituras). Si un esclavo identifica esa dirección como suya responde con Bus_DevSel
+		-- !    		   Si en el ciclo en el que se envía la dirección, nadie activa devsel, esa dirección se almacena en (ADDR_Error_Reg)  y se activa el MEM_Error, tambien hay errores de tipo acceso no alineado y intento de escritura en ADDR_REG_ERROR
+		-- ! 	Datos: 	   Al siguiente ciclo de que se active devsel. Bus_Frame debe seguir a 1 y el servidor avisa si esta listo para la transferencia enviando BUS_TRDY y recibira o enviará un dato por ciclo a través de BUS_Data_Addr hasta que el maestro desactive la señal Bus_Frame. Si en un ciclo no se puede atender, se desactiva bus_trdy y esto indica al maestro que debe esperar.
+		-- ! 			   Si el maestro pide la palabra 4, el servidor manda, la 4, la 8, la 12 etc (4 palabras). Cuando se envíe la última palabra, se activará la señal last_word.  Si solo queremos 1 last word se activara ya que es la primera y ultima palabra en transferir
+		-- Estado Inicio          
     if (state = Inicio and RE= '0' and WE= '0') then -- si no piden nada no hacemos nada
 		next_state <= Inicio;
 		ready <= '1';
@@ -204,7 +212,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		ready <= '1'; --Dado que hemos intentado hacer una escritura y ha sido un hit, en el siguiente ciclo, puede escribir 
 		MC_WE0 <= hit0; --activamos la escritura en el banco en el que se ha acertado. 
 		MC_WE1 <= hit1; -- ! Como juntamos las 2 señales en 1 pero cada una sigue teniendo su valor, vale con asignar MC_WEX a su correspondiente hit, si ha sido hit0, MC_WE0 valdrá 1 y MC_WE1 valdra 0	
-		mux_origen <= '0';-- ! Como la direccion de palabra viene del MIPS se elige 1 
+		mux_origen <= '0'; -- ! Como la direccion de palabra viene del MIPS se elige 1 
 		Update_dirty <= '1'; -- ! Dado que hemos hecho una escritura exitosa, ponemos el bit dirty en 1
 		inc_w <=  '1'; -- como la operaci�n era de escritura incrementamos el contador
 	elsif(state = Inicio and RE='1' and hit= '0') then -- ! Fallo de Lectura

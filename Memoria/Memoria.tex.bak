@@ -11,6 +11,10 @@
 \usepackage{xcolor} % Paquete para usar colores
 \usepackage{grffile}
 \usepackage{natbib} % Paquete para estilo de citas
+\usepackage{tabularx}
+
+%Definitions
+\definecolor{lightgray}{gray}{0.5}
 
 \renewcommand{\contentsname}{Índice}
 \renewcommand{\cfttoctitlefont}{\hfill\Large\bfseries}
@@ -32,8 +36,13 @@
 % Configuración del encabezado y pie de página
 \pagestyle{fancy}
 \fancyhf{} % Limpia los encabezados y pies de página predeterminados
-\fancyhead[R]{\textit{AOC - Proyecto 2}} % Encabezado izquierdo con el título del proyecto
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot[L]{\textit{AOC - Proyecto 2}} % Encabezado izquierdo con el título del proyecto
+\fancyhead[L]{\textit{Iván Deza, Víctor Martínez}}
 \fancyfoot[R]{\thepage} % Pie de página centrado con el número de página
+\renewcommand{\footrule}{\hbox to\headwidth{\color{lightgray}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{lightgray}\leaders\hrule height \headrulewidth\hfill}}
+
 
 \begin{document}
 
@@ -76,10 +85,17 @@
 \section{Introducción}
 El proyecto en cuestión trata de el diseño e implementación de una unidad de control que sea capaz de controlar una jerarquía de memoria
 donde tenemos: una memoria cache, de rápido acceso, una memoria Scratch de datos, también de acceso rápido, además de una memoria principal más lenta que las anteriores mencionadas.
-Esta jerarquía de memoria viene conectada vía un bus, de tipo semisincrono, que actua de árbitro entre todas las memorias de la jerarquía. 
+Esta jerarquía de memoria viene conectada vía un bus, de tipo semisincrono, que actúa de árbitro entre todas las memorias de la jerarquía. Además la política de funcionamiento de la cache es \textbf{Fetch on Write Miss} (traemos el bloque que necesitamos cuando hay un fallo de escritura)
+y \textbf{Copy Back} (no actualizamos escrituras a la memoria principal instantaneamente si no cuando hay un fallo y nos deshacemos de ese bloque). \par
+Esta jerarquía de memoria se introduce en el chip MIPS del proyecto número 1, al cual se le ha cambiado el MD subsystem por uno más complejo, el cual incluye una jerarquía de memoria.\par
+Además de esto, en el apartado 8.1, hemos comentado como funciona un ataque de canal lateral a una memoria cache, demostrado su funcionamiento y creado una prueba de concepto para este tipo de ataques. Tambien se propone una estrategia para mitigar esta vulnerabilidad.
 
 \section{Diagrama de Estados de la UC}
-\lipsum[1-3] % Texto de relleno
+Aquí se adjunta una imagen con el diagrama de estados de la unidad de control que hemos implementado. Este diseño tiene politica de escritura \textit{Copy Back} la cual consiste
+en que no se escribe en memoria prncipal todos los cambios que se han ido haciendo durante el programa, si no que se actualiza solo en el momento en el que se bloque se expulsa
+de la memoria cache. Este hace que la carga de trabajo de entrada salida sea menor ya que reducimos en gran medid los accesos de escritura a memoria principal. Además, ya que la 
+memoria cache es más rápida que la memoria principal, hace que se reduzca el tiempo de ejecución de cieras secuencias de instrucciones como bucles. 
+\lipsum[1-3]
 
 \section{Descomposición de Dirección}
 \lipsum[4-6] % Texto de relleno
@@ -98,24 +114,41 @@ Esta jerarquía de memoria viene conectada vía un bus, de tipo semisincrono, qu
 \section{Apartados Opcionales}
 \subsection{Hacking Ético}
 En este apartado hemos querido enseñar como podíamos realizar un ataque DOS (denial of service o denegación de servicio), si sabemos como esta estructurada la memoria cache de un procesador.\par
-Para solucionar esto lo que podrimos hacer es implementar un bitde lock, de manera que ciertas instrucciones que podamos marcar, no abandonarian nunca la cache. Mejorando el rendimiento del procesador frente a este tipo de ataques. 
-Informacion sobre este tipo de ataque: \cite{BackCache}.
+Para detectarlo, podríamos usar un contrador de Write Missess, y que si ese valor es igual o muy cercano al numero de writes que se esta haciendo, saltar una señal alertando que posiblemente este tipo de ataque esta tendiendo lugar. 
+Para solucionar esto lo que podríamos hacer es implementar un bit de lock, de manera que ciertas instrucciones que podamos marcar, no abandonarían nunca la cache. Mejorando el rendimiento del procesador frente a este tipo de ataques. Otra solución podría ser mandar un 
+halt de manera que terminaríamos este proceso (en caso de que la cpu sea uniciclo). 
+Información sobre este tipo de ataque: \cite{BackCache}.
+
+\newpage
 
 \section{Horas Dedicadas}
-\horasMemoria{2}{0}
-\horasVhdl{0}{0}
-\horasDepuracion{0}{0}
-\horasEntenderEnunciado{1}{0}
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|X|}
+\hline
+\horasDepuracion{0}{0} \\
+\hline
+\horasEntenderEnunciado{1}{0} \\
+\hline
+\horasMemoria{0}{0} \\
+\hline
+\horasVhdl{1}{0} \\
+\hline
+\end{tabularx}
+\end{table}
 
 \section{Autoevaluación}
 \lipsum[15-18]
 
+\newpage
 \section{Anexo}
 \subsection{Imágenes}
 \begin{figure}[htbp]
   \centering
   \includegraphics[page=1, width=0.8\textwidth, clip]{assets/AOC2_2024_Esquemas_Proy2.pdf}
-  \caption{Esquema del MIPS trabajado durante el proyecto}
+  \caption{Esquema y señales principales del nuevo IO MD subsytem y de su bus. Se pide dise˜nar la
+Unidad de Control de la MC}
   \label{fig:imagen}
 \end{figure}
 

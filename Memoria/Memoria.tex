@@ -88,7 +88,7 @@
 El proyecto en cuestión trata de el diseño e implementación de una unidad de control que sea capaz de controlar una jerarquía de memoria
 donde tenemos: una memoria cache, de rápido acceso, una memoria Scratch de datos, también de acceso rápido, además de una memoria principal más lenta que las anteriores mencionadas.
 Esta jerarquía de memoria viene conectada vía un bus, de tipo semisincrono, que actúa de árbitro entre todas las memorias de la jerarquía. Además la política de funcionamiento de la cache es \textbf{Fetch on Write Miss} (traemos el bloque que necesitamos cuando hay un fallo de escritura)
-y \textbf{Copy Back} (no actualizamos escrituras a la memoria principal instantáneamente si no cuando hay un fallo y nos deshacemos de ese bloque). \par
+y \textbf{Copy Back} (no actualizamos escrituras a la memoria principal instantáneamente si no cuando hay un fallo y nos deshacemos de ese bloque). Además de todo esto, la política de reemplazo es de tipo FIFO (First In First Out). \par
 Esta jerarquía de memoria se introduce en el chip MIPS del proyecto número 1, al cual se le ha cambiado el MD subsystem por uno más complejo, el cual incluye una jerarquía de memoria.\par
 Además de esto, en el apartado 8.1, hemos comentado como funciona un ataque de canal lateral a una memoria cache, demostrado su funcionamiento y creado una prueba de concepto para este tipo de ataques. También se propone una estrategia para mitigar esta vulnerabilidad.
 
@@ -98,15 +98,27 @@ en que no se escribe en memoria principal todos los cambios que se han ido hacie
 de la memoria cache. Este hace que la carga de trabajo de entrada salida sea menor ya que reducimos en gran medid los accesos de escritura a memoria principal. Además, ya que la 
 memoria cache es más rápida que la memoria principal, hace que se reduzca el tiempo de ejecución de ciertas secuencias de instrucciones como bucles.\par
 Otra politica utilizada es la denominada \textbf{Fetch on Write Miss}, la cual consiste en que traemos a cache los datos en caso de que halla un fallo de escritura. Esto complementa
-muy bien la política copy back y hace que el rendimiento de la cache sea superior a otro conjuntos de politicas como Write Through junto a una política que implemente Fetch on Write miss.\par
+muy bien la política copy back y hace que el rendimiento de la cache sea superior a otro conjuntos de politicas como Write Through junto a una política que implemente Fetch on Write miss.\cite{RivoireCacheWrite}\par
 
-\section{Descomposición de Dirección}
-\lipsum[4-6] % Texto de relleno
+\newpage
+
+\section{Descomposición de la Dirección de la cache}
+Para direccionar nuestra memoria cache hemos optado por una descomposición en 8 bits, con los cuales podemos direccionar de la siguiente manera: 1 bit para direccionar entre los 2 sets (asociatividad 2), otro bit para direccionar entre las 2 vías que existen en cada set
+, 2 bits que nos permiten direccionar bloques dentro de las vías, otros 2 bits para direccionar palabras dentro de estos bloques y por ultimo 2 bits para direccionar bytes dentro de la palabra. En nuestro caso como necesitamos direcciones alineadas estos 2 ultimos bits 
+tendran siempre el mismo valor (00).\par
+Diagrama descriptivo del direccionamiento de la cache:\par
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[page=1, width=0.8\textwidth, clip]{assets/Descomposicion_Direcciones_light.png}
+  \caption{Descomposicion del direccionamiento de la MC}
+  \label{fig:imagen}
+\end{figure}
 
 \section{Análisis de Latencias}
 Para medir el rendimiento de la cache hemos utilizado una medición en ciclos, ya que es una medida de tiempo constante. Podríamos comparar la ejecucion del mismo programa 
 en un procesador que no implementa cache y con uno que si lo hace. También podriamos medir los ciclos de reloj que espera la cpu a tener el dato listo. Factores a tener en cuenta 
-sería el numero de fallos tanto en lectura como escritura ya que son estos los que hacen que nuestro procesador tenga que esperar al dato o instrucción, ralentizando la ejecución.\par
+sería el numero de fallos tanto en lectura como escritura ya que son estos los que hacen que nuestro procesador tenga que esperar al dato o instrucción, ralentizando la ejecución.\cite{HennyPatt}\par
 Una manera sencilla de calcularlo sería\par
 
 \begin{adjustwidth}{2cm}{2cm}
@@ -148,8 +160,6 @@ Para solucionar esto lo que podríamos hacer es implementar un bit de lock, de m
 halt de manera que terminaríamos este proceso (en caso de que la procesador sea uniciclo). 
 Información sobre este tipo de ataque: \cite{BackCache}.
 
-\newpage
-
 \section{Horas Dedicadas}
 
 \begin{table}[h]
@@ -158,7 +168,7 @@ Información sobre este tipo de ataque: \cite{BackCache}.
 \hline
 \horasDepuracion{0}{0} \\
 \hline
-\horasEntenderEnunciado{1}{0} \\
+\horasEntenderEnunciado{2}{0} \\
 \hline
 \horasMemoria{2}{0} \\
 \hline
