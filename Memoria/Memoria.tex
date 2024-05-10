@@ -15,6 +15,7 @@
 \usepackage{changepage}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{adjustbox}
 
 \usetikzlibrary{automata, positioning}
 
@@ -103,22 +104,58 @@ memoria cache es más rápida que la memoria principal, hace que se reduzca el t
 Otra politica utilizada es la denominada \textbf{Fetch on Write Miss}, la cual consiste en que traemos a cache los datos en caso de que halla un fallo de escritura. Esto complementa
 muy bien la política copy back y hace que el rendimiento de la cache sea superior a otro conjuntos de politicas como Write Through junto a una política que implemente Fetch on Write miss.\cite{RivoireCacheWrite}\par
 
-
-
-\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+\begin{center}
+\begin{adjustbox}{left} 
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto,] 
    \node[state] (q_0)   {Inicio}; 
    \node[state] (q_1) [below=of q_0] {Req\_bus}; 
-   \node[state,accepting](q_2) [below=of q_1] {Transaction};
+   \node[state] (q_2) [below=of q_1] {Transaction};
+   \node[state] (q_4) [left=of q_2, xshift=-4.5cm] {Clean\_Miss};
+   \node[state] (q_5) [left=of q_2, xshift=8cm] {Dirty\_Miss};
+   \node[state] (q_6) [below=of q_5] {Dirty\_miss\_data};
+
     \path[->] 
     (q_0) edge  node {hit = 0 or addr\_non\_cachable = 1} (q_1)
           edge [loop above] node  {(RE = 1 or WE = 0) and hit = 1} ()
           edge [loop left]  node {(RE = 1 or WE = 1) and unaligned = 1} ()
           edge [loop right] node {RE = 1 and internal\_addr = 1} ()
           edge [out=30, in=60, looseness=8] node[right=0.5cm] {WE = 1 and internal\_addr = 1} (q_0)
-    (q_1) edge  node  {1} (q_2)
+    (q_1) edge  node[left, yshift=0.4cm]  {bus\_grant = 1} (q_2)
           edge [loop left] node {bus\_grnt = 0} ()
-    (q_2) edge [loop right] node {0,1} ();
+    (q_2) edge [loop right] node[xshift=-0.8cm, yshift=-0.55cm] {Bus\_trdy = 0} ()
+          edge[out=160 , in=250, looseness=1, controls=+(120:3) and +(210:10)] node[align=center, yshift=1.4cm] {addr\_non\_cacheable = 1 and Bus\_DevSel = 1 \\ and Bus\_trdy = 1} (q_0)
+          edge node[align=center] {Bus\_DevSel = 0 and Dirty\_bit = 0 \\ and Bus\_trdy = 1} (q_4)
+          edge[out=20, in=140] node[align=center, pos=0.67] {Bus\_DevSel = '1' \\ and Dirty\_bit = '0' and hit = '0'} (q_5)
+    (q_5) edge node {Bus\_trdy = 1} (q_6)
+    (q_6) edge[out=270, in=15, looseness=3, controls=+(0:6) and +(17:8)] node {last\_word\_block = 1} (q_0);
 \end{tikzpicture}
+\end{adjustbox}
+\end{center}
+
+\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto] 
+   \node[state] (q_0)   {Inicio}; 
+   \node[state] (q_1) [below=of q_0] {Req\_bus}; 
+   \node[state] (q_2) [below=of q_1] {Transaction};
+   \node[state] (q_4) [left=of q_2, xshift=-4.5cm] {Clean\_Miss};
+   \node[state] (q_5) [right=of q_2, xshift=4.5cm] {Dirty\_Miss};
+   \node[state] (q_6) [below=of q_5] {Dirty\_miss\_data};
+
+    \path[->] 
+    (q_0) edge  node {hit = 0 or addr\_non\_cachable = 1} (q_1)
+          edge [loop above] node  {(RE = 1 or WE = 0) and hit = 1} ()
+          edge [loop left]  node {(RE = 1 or WE = 1) and unaligned = 1} ()
+          edge [loop right] node {RE = 1 and internal\_addr = 1} ()
+          edge [out=30, in=60, looseness=8] node[right=0.5cm] {WE = 1 and internal\_addr = 1} (q_0)
+    (q_1) edge  node[left, yshift=0.4cm]  {bus\_grant = 1} (q_2)
+          edge [loop left] node {bus\_grnt = 0} ()
+    (q_2) edge [loop right] node[xshift=-0.8cm, yshift=-0.55cm] {Bus\_trdy = 0} ()
+          edge[out=160 , in=250, looseness=1, controls=+(120:3) and +(210:10)] node[align=center, yshift=1.4cm] {addr\_non\_cacheable = 1 and Bus\_DevSel = 1 \\ and Bus\_trdy = 1} (q_0)
+          edge node[align=center] {Bus\_DevSel = 0 and Dirty\_bit = 0 \\ and Bus\_trdy = 1} (q_4)
+          edge[out=20, in=140] node[align=center, pos=0.67] {Bus\_DevSel = '1' \\ and Dirty\_bit = '0' and hit = '0'} (q_5)
+    (q_5) edge node {Bus\_trdy = 1} (q_6);
+\end{tikzpicture}
+
+
 
 
 \newpage

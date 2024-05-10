@@ -1,0 +1,70 @@
+v 4
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "UD_2024_completar.vhd" "f7608332e2235041e23abb919d0cc3abf440de46" "20240411234748.576":
+  entity ud at 6( 299) + 0 on 605;
+  architecture behavioral of ud at 32( 1998) + 0 on 606;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "testbench_AOC2_SoC.vhd" "6a8a4736e072249a0078c60b7fe0d38823d755fa" "20240406151323.896":
+  entity testbench at 3( 26) + 2 on 477;
+  architecture behavior of testbench at 10( 149) + 2 on 478;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "mux4_1.vhd" "77e61d225e8903760cce4b3e7e6390eff88901d5" "20240406151323.816":
+  entity mux4_1 at 20( 493) + 0 on 473;
+  architecture behavioral of mux4_1 at 41( 1197) + 0 on 474;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "mux2_1.vhd" "16c03f03addbb8a3f3dad9a1da21f497d0aa4854" "20240406151323.749":
+  entity mux2_1 at 20( 493) + 0 on 469;
+  architecture behavioral of mux2_1 at 39( 1069) + 0 on 470;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "memoriaRAM_I_tests_exepciones_2024.vhd" "922e7ffd80791edc9b50c94ed3736f9f26d710fe" "20240411234748.529":
+  entity memoriaram_i at 20( 491) + 0 on 603;
+  architecture behavioral of memoriaram_i at 45( 1539) + 0 on 604;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "Ext_signo.vhd" "a86099b57bba8e351753e752f26601c7908ad4f4" "20240406151323.267":
+  entity ext_signo at 20( 488) + 0 on 461;
+  architecture behavioral of ext_signo at 37( 989) + 0 on 462;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "counter.vhd" "4c787804472fe6172d2d20f4bfdcfb0934d580c9" "20240406151323.148":
+  entity counter at 20( 487) + 0 on 457;
+  architecture behavioral of counter at 46( 1270) + 0 on 458;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "bits_shifter.vhd" "84314704fb90b0c3a56bacef575e87f50f736186" "20240406151323.030":
+  entity two_bits_shifter at 20( 491) + 0 on 453;
+  architecture behavioral of two_bits_shifter at 37( 1003) + 0 on 454;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "Banco_MEM.vhd" "ac4b8b3ab194949e29b7e4c0d8e934e01c59c592" "20240406151322.884":
+  entity banco_mem at 20( 488) + 0 on 449;
+  architecture behavioral of banco_mem at 71( 2678) + 0 on 450;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "Banco_EX.vhd" "57445634bb03f893c9352a376ecd62698d63e32d" "20240406151322.769":
+  entity banco_ex at 20( 487) + 0 on 445;
+  architecture behavioral of banco_ex at 88( 3392) + 0 on 446;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "ALU.vhd" "36885e9b9fb1d4260cef66f02b1eb0f5c1fecac1" "20240406151322.644":
+  entity alu at 20( 482) + 0 on 441;
+  architecture behavioral of alu at 40( 1278) + 0 on 442;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "adder32.vhd" "314628325a7fba8ded83ce676b48051d32b99dc4" "20240406151322.598":
+  entity adder32 at 20( 486) + 0 on 439;
+  architecture behavioral of adder32 at 39( 1097) + 0 on 440;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "AOC2_SoC.vhd" "5105383ef5ea414868dc29f477eee582375260a8" "20240406151322.720":
+  entity aoc2_soc at 3( 26) + 2 on 443;
+  architecture behavior of aoc2_soc at 17( 536) + 2 on 444;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "Banco_ID.vhd" "688b006032428225982a73c4921ea61c8c20d37f" "20240406151322.844":
+  entity banco_id at 4( 288) + 0 on 447;
+  architecture behavioral of banco_id at 24( 1122) + 0 on 448;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "Banco_WB.vhd" "09f709cc072c7c47cd795b43ce7f357e3da439d1" "20240406151322.960":
+  entity banco_wb at 20( 487) + 0 on 451;
+  architecture behavioral of banco_wb at 63( 2304) + 0 on 452;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "BReg.vhd" "bb69d410cca56dd4f196ac706a7044ffa4091399" "20240406151323.069":
+  entity breg at 20( 481) + 0 on 455;
+  architecture behavioral of breg at 49( 1525) + 0 on 456;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "Exception_manager_2024_completar.vhd" "396b9e0276c840fd84076a20bfc6ee3031426fcf" "20240406201136.020":
+  entity exception_manager at 6( 309) + 0 on 503;
+  architecture behavioral of exception_manager at 29( 1798) + 0 on 504;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "IO_MD_subsystem.vhd" "cd21972a2a018f8cd6f06d0b8615a3a5190b38b4" "20240410210756.418":
+  entity io_data_memory_subsystem at 20( 470) + 0 on 579;
+  architecture behavioral of io_data_memory_subsystem at 57( 2462) + 0 on 580;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "Mips_segmentado_IRQ_2024_completar.vhd" "f56dbb640a5aae8f7e06bb029c4f251b84433689" "20240411234748.276":
+  entity mips_segmentado at 14( 796) + 0 on 601;
+  architecture behavioral of mips_segmentado at 33( 1690) + 0 on 602;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "mux2_5bits.vhd" "380d4d9ec33f6a77c2e56b7f36dec5b19b69ff9d" "20240406151323.779":
+  entity mux2_5bits at 20( 489) + 0 on 471;
+  architecture behavioral of mux2_5bits at 39( 1068) + 0 on 472;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "REGISTER.vhd" "bb1f16639744f39ecc1ef4892185e16345358757" "20240406151323.856":
+  entity reg at 2( 2) + 0 on 475;
+  architecture behavioral of reg at 15( 421) + 0 on 476;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "UA_2024_completar.vhd" "57eaa44bcb5017f7d9dcc3eba0c2e3b121e0d585" "20240406200238.490":
+  entity ua at 6( 270) + 0 on 501;
+  architecture behavioral of ua at 24( 877) + 0 on 502;
+file "/home/victor/Universidad/AOC2/Proyecto 1-20240405T163739Z-001/Proyecto 1/Fuentes_MIPS_Proyecto_2024/" "UC_Mips_2024_completar.vhd" "091e1da56fe0bb545937794b759aad94675edd95" "20240406173428.811":
+  entity uc at 6( 271) + 0 on 487;
+  architecture behavioral of uc at 38( 1518) + 0 on 488;

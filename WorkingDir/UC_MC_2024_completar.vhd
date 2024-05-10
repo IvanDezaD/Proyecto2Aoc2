@@ -90,7 +90,7 @@ component counter is
 					  );
 end component;		           
 -- Ejemplos de nombres de estado. No hay que usar estos. Nombrad a vuestros estados con nombres descriptivos. As� se facilita la depuraci�n
-type state_type is (Inicio, single_word_transfer_addr, read_block, write_dirty_block, single_word_transfer_data, block_transfer_addr, block_transfer_data, Send_Addr, Send_ADDR_CB, fallo, CopyBack, bajar_Frame, no_cacheable, Dirty_miss, Clean_miss, Dirty_miss_send_data, Trans); 
+type state_type is (Inicio, single_word_transfer_addr, read_block, write_dirty_block, single_word_transfer_data, block_transfer_addr, block_transfer_data, Send_Addr, Send_ADDR_CB, fallo, CopyBack, bajar_Frame, no_cacheable, Dirty_miss, Clean_miss, Dirty_miss_send_data, Trans, Bus_Request); 
 type error_type is (memory_error, No_error); 
 signal state, next_state : state_type; 
 signal error_state, next_error_state : error_type; 
@@ -184,18 +184,18 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		-- ? He quitado el estado de no cacheable ya que mealy podemos hacerlo en la transicion a inicio.
 		-- Estado Inicio          
     if (state = Inicio and RE= '0' and WE= '0') then -- si no piden nada no hacemos nada
-		next_state <= Inicio;
-		ready <= '1';
+		next_state <= Inicio;  -- Por lo tanto el siguiente estado sería el mismo 
+		ready <= '1';     -- Y estamos preparados para recibir las operaciones
 	elsif (state = Inicio) and ((RE= '1') or (WE= '1')) and  (unaligned ='1') then -- si el procesador quiere leer una direcci�n no alineada
 		-- Se procesa el error y se ignora la solicitud
-		next_state <= Inicio;
-		ready <= '1';
+		next_state <= Inicio;  -- Permaneciendo en el mismo estado
+		ready <= '1';  -- Admitimos que nos lleguen operaciones
 		next_error_state <= memory_error; --�ltima direcci�n incorrecta (no alineada)
 		load_addr_error <= '1';
     elsif (state = Inicio and RE= '1' and  internal_addr ='1') then -- si quieren leer un registro de la MC se lo mandamos
     	next_state <= Inicio;
 		ready <= '1';
-		mux_output <= "00"; -- Completar. "00" es el valor por defecto. �Qu� valor hay que poner?
+		mux_output <= "10"; -- Completar. "10" es el valor por defecto. �Qu� valor hay que poner?
 		next_error_state <= No_error; --Cuando se lee el registro interno el controlador quita la se�al de error
 	elsif (state = Inicio and WE= '1' and  internal_addr ='1') then -- si quieren escribir en el registro interno de la MC se genera un error porque es s�lo de lectura
     	next_state <= Inicio;
@@ -214,83 +214,171 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		MC_WE0 <= hit0; --activamos la escritura en el banco en el que se ha acertado. 
 		MC_WE1 <= hit1; -- ! Como juntamos las 2 señales en 1 pero cada una sigue teniendo su valor, vale con asignar MC_WEX a su correspondiente hit, si ha sido hit0, MC_WE0 valdrá 1 y MC_WE1 valdra 0	
 		mux_origen <= '0';-- ! Como la direccion de palabra viene del MIPS se elige 1 
-		Update_dirty <= '1'; -- ! Dado que hemos hecho una escritura exitosa, ponemos el bit dirty en 1
+		Update_dirty <= '1' when dirty_bit = '0' else '0'; -- ! Dado que hemos hecho una escritura exitosa, ponemos el bit dirty en 1, en caso de que estuviera a 0
 		inc_w <=  '1'; -- como la operaci�n era de escritura incrementamos el contador
-	elsif(state = Inicio and hit= '0' or addr_non_cacheable = '1') then -- ! Tenemos que gestionar un miss o una direccion no cacheable
-		next_state <= Bus_req;
-		Bus_req <= '1';
-	elsif(state = Bus_req and Bus_grant = '0') then
-		next_state <= Bus_req;
-		Bus_req <= '1';
-	elsif(state = Bus_req and Bus_grant = '1') then
-		next_state <= Trans;
-		MC_send_addr_ctrl <= '1';
-		Frame <= '1';
-	elsif(state = Trans and Bus_DevSel = '0') then
-		next_state <= Inicio;
-		Mem_ERROR <= '1';
-	elsif(state = Trans and Bus_DevSel = '1' and addr_non_cacheable = '1' and bus_TRDY = '1') then -- ! Asumimos que se puede hacer todo en la transicion de la vuelta a inicio
-		next_state  <= Inicio;
-		mux_output <= '0';
-		last_word <= '1';
-		MC_send_data  <= '1'; 
-		Frame <= '1';
-		ready  <= '1';
-	elsif(state = Trans and Bus_DevSel = '1' and Dirty_bit = '1' and hit = '0') then -- ! Caso de dirty miss
-		next_state <= Dirty_miss;
-		Frame <= '1';
-	elsif(state = Trans and Bus_DevSel = '1' and Dirty_bit = '0' and hit = '0') then -- ! Fallo limpio
-		next_state <= Clean_miss;
-		Frame   <= '1';
-	elsif(state = Clean_miss and bus_TRDY = '0') then
-		next_state  <= Clean_miss;
+	elsif(state = Inicio and (WE = '1' or RE = '1') and hit = '0') then -- ! Tenemos que gestionar un miss o una direccion no cacheable
+		next_state <= Bus_Request;  -- ! Estado al que iremos para gestionar/pedir el bus.
+		inc_m  <= '1';  -- ! Indicamos que ha habido un fallo en la cache al no haber hit (hit = '0') 
+		
+	-- ? Estado de Arbitraje
+	elsif(state = Bus_Request) then --!  En caso de que no nos llegue el bus: 
+		if(Bus_grant = '0') then
+			next_state  <= Bus_Request;
+			Bus_req  <= '1';
+		elsif(Bus_grant = '1') then
+			next_state  <= Trans;
+			Bus_req <= '1';
+		end if;
+
+	-- ? Estado Transfer
+	elsif(state = Trans) then
 		Frame  <= '1';
-	elsif(state = Clean_miss and bus_TRDY = '1') then
-		next_state  <=  Clean_miss;
-		MC_bus_Rd_Wr  <= '1'; -- ! lo ponemos explicito para tenerlo mas claro (operacion de lectura de la memoria principal)
-		MC_tags_WE  <= '1';
-		MC_send_data  <= '1';
-		Frame  <= '1';
-	elsif(state = Clean_miss and bus_TRDY = '1' and last_word_block = '1') then
-		next_state  <= Inicio;
-		MC_bus_Rd_Wr  <=  '1';
-		MC_tags_WE  <= '1';
-		MC_send_data <= '1';
-		Frame  <= '1'; 
-		ready  <= '1';
-		last_word  <= '1'; -- ! Como es la ultima palabra avisamos 
-	elsif(state = Dirty_miss and bus_TRDY = '1') then
-		next_state  <= Dirty_miss_send_data;
-		send_dirty  <= '1'; -- ! Mandamos a MP la dirección del bloque sucio
-		Frame  <= '1'; -- ! Seguimos usando el bus
-	elsif(state  = Dirty_miss_send_data and bus_TRDY = '1') then
-		next_state  <= Clean_miss;
-		MC_send_data  <= '1';
-		Frame  <= '1';
-		Block_copied_back  <= '1';
-		Update_dirty  <= '1';  
-	elsif(state = Dirty_miss_send_data and bus_TRDY = '1' and last_word_block = '1') then
-		next_state  <= Clean_miss;
-		MC_send_data  <= '1';
-		Frame  <= '1';
-		Block_copied_back  <= '1';
-		Update_dirty  <= '1';
-		ready <= '1';
-		last_word <= '1';
-		inc_cb <= '1';
-	-- ! Casos de espera (cuando TRGT_ready sea 0)
-	elsif(Dirty_miss = '1' and bus_TRDY = '0') then
-		next_state  <= Dirty_miss;
-		Frame  <= '1';
-	elsif(state = Dirty_miss_send_data and bus_TRDY = '0') then
-		next_state  <=  Dirty_miss_send_data;
-		Frame  <= '1';
-	elsif(state = Clean_miss and bus_TRDY = '1') then
-		next_state <= Clean_miss;
-		Frame  <= '1';
-	elsif(state = Trans and Bus_DevSel = '1' and addr_non_cacheable = '1' and bus_TRDY = '0') then
-		next_state <= Trans;
-		Frame <= '1';
+		MC_send_addr_ctrl  <= '1';
+		if(Bus_DevSel = '0') then
+			next_state  <= Inicio;
+		elsif(addr_non_cacheable = '1') then
+			next_state  <= No_Cacheable;
+		elsif(dirty_bit = '1') then
+			next_state  <= Dirty_miss;
+			--send_dirty  <= '1';
+		elsif(dirty_bit = '0') then
+			next_state  <= Clean_miss;
+		end if;
+
+	-- ? Estado no cacheable
+	elsif(state = No_Cacheable) then
+		if(bus_TRDY = '1') then
+			next_state  <= Inicio;
+			last_word  <= '1';
+			Frame  <= '1';
+			MC_send_data  <= '1';
+			mux_output  <= "01";
+		elsif(bus_TRDY = '0') then
+			next_state  <=  No_Cacheable;
+			Frame  <= '1';
+		end if;
+	
+	-- ? Estado Clean_miss
+	elsif(state = Clean_miss) then
+		if(bus_TRDY = '1' and last_word_block = '0') then
+			next_state  <= Clean_miss;
+			MC_send_data  <= '0';
+			Frame  <= '1';
+			mux_origen  <= '1';
+			MC_WE0  <= '1' when (via_2_rpl = '0') else '0';
+			MC_WE1  <= '1' when (via_2_rpl = '1') else '0';
+			count_enable  <= '1';
+			MC_bus_Rd_Wr  <= '1'; 
+
+		elsif(bus_TRDY = '1' and last_word_block = '1') then
+			next_state  <= Inicio;
+			MC_send_data  <= '0';
+			Frame  <= '1';
+			mux_origen  <= '1';
+			MC_WE0  <= '1' when (via_2_rpl = '0') else '0';
+			MC_WE1  <= '1' when (via_2_rpl = '1') else '0';
+			count_enable  <= '1';
+			last_word  <= '1';
+			MC_tags_WE   <= '1';
+
+	
+		elsif(bus_TRDY = '0') then
+			next_state  <= Clean_miss;
+			Frame  <= '1';
+		end if;
+	
+	-- ? Estado clean miss
+	elsif(state = Dirty_miss) then
+		if(bus_TRDY = '1') then
+			next_state  <= Dirty_miss_send_data;
+			send_dirty  <= '1';
+			Frame  <= '1';
+		elsif(bus_TRDY = '0') then
+			next_state  <= Dirty_miss;
+			Frame  <= '1';
+		end if;
+	elsif(state = Dirty_miss_send_data) then
+		if(bus_TRDY = '1' and last_word_block = '0') then
+			next_state  <= Dirty_miss_send_data;
+			MC_send_data <= '1';
+			Frame  <= '1';
+			MC_bus_Rd_Wr  <= '0';
+		elsif(bus_TRDY = '0' and last_word_block = '1') then
+			next_state <= Bus_Request;
+			MC_send_data  <= '1';
+			Frame  <= '1';
+			Block_copied_back  <= '1';
+			Update_dirty  <= '1';
+			inc_cb  <= '1';
+			MC_bus_Rd_Wr  <= '0';
+		end if;
+		
+	-- elsif(state = Trans and Bus_DevSel = '1' and addr_non_cacheable = '1' and bus_TRDY = '1') then -- ! Asumimos que se puede hacer todo en la transicion de la vuelta a inicio. En caso de que algun eslavo reconozca la dirección pero no se pueda meter en la cache: 
+	-- 	next_state  <= Inicio; -- ! Volvemos al estado inicial 
+	-- 	last_word <= '1';  -- ! Como la Scratch solo transsfiere de palabra en palabra, ponemos que es el último dato que queremos transferir
+	-- 	Frame <= '1';  -- ! Como todavía no ha acabado la transferencia, ya que es en el mismo ciclo, ponemos frame a 1
+	-- 	MC_send_data  <=  '1' when WE = '1' else '0'; -- ! Cuando queremos que el MIPS escriba en la scatch, miramos si es escrita y activamos MC_send_data, sinio la dejamos a 0
+	-- 	mux_output <= "01" when (RE = '1') else "00"; -- ! Y en caso de que haya que leer de la scratch, cambiamos el mux_output, para que lea del bus lo que se le ha introducido anteriormente
+	-- elsif(state = Trans and Bus_DevSel = '1' and dirty_bit = '1' and hit = '0') then -- ! Caso de dirty miss, el bloque de la cache lo hemos cambiado y nos toca quitarlo de la cache, ya que el bloque que queremos no se encuentra en esta.
+	-- 	next_state <= Dirty_miss; -- ! Pasamos al estado, en el que tenemos que actualizar el bloque que teniamos en la cache en la memoria principal
+	-- 	Frame <= '1'; -- ! Como tenemos que transferir los datos a y desde la cache, establecemos que no se puede transferir datos de otro lugar hasta que terminemos 
+	-- elsif(state = Trans and Bus_DevSel = '1' and dirty_bit = '0' and hit = '0') then -- ! Fallo limpio, no se ha cambiado el bloque de la cache a sustituir, por lo que podemos cambiarlo directamente, sin actualizar la memoria principal
+	-- 	next_state <= Clean_miss; -- ! Podemos movernos al estado en el que directamente movemos el bloque de la memoria principal a la cache. 
+	-- 	Frame   <= '1';  -- ! Como tenemos que mover el bloque a la cache, establecemos que no se pueden mover datos mientras lo hacemos. 
+	-- elsif(state = Clean_miss and bus_TRDY = '0') then -- ! En caso de que no queramos poner el bloque en la cache pero no podemos en ese ciclo: 
+	-- 	next_state  <= Clean_miss; -- ! Seguimos en el mismo estado
+	-- 	Frame  <= '1';  -- ! Y establecemos que queremos mandar datos y que por lo tanto no se manden otros. 
+	-- elsif(state = Clean_miss and bus_TRDY = '1') then -- ! En caso de que si que podamos en el mismo ciclo: 
+	-- 	next_state  <=  Clean_miss; -- ! Seguios en el mismo estado mientras queramos seguir enviando datos 
+	-- 	MC_bus_Rd_Wr  <= '1'; -- ! lo ponemos explicito para tenerlo mas claro (operacion de lectura de la memoria principal) (queremos escribir en la cache)
+	-- 	MC_tags_WE  <= '1'; -- ! Tenemos que escribir también las etiquetas del nuevo bloque.
+	-- 	MC_send_data  <= '1'; -- ! Se envian los datos que correspondan 
+	-- 	Frame  <= '1';  -- ! Como queremos escribir todo el bloque sin que otros lo hagan, ponemos frame a 1 para que nadie nos interrumpa. 
+	-- 	mux_origen <= '1'; -- ! Queremos recibir los datos del bus
+	-- 	MC_WE0  <= '1' when (via_2_rpl  = '0') else '0'; -- ! Escribimos en la via que corresponda
+	-- 	MC_WE1  <= '1' when (via_2_rpl = '1') else '0';
+	-- 	count_enable  <= '1'; -- ! Incrementamos el numero de palabras que nos hemos traido
+	-- elsif(state = Clean_miss and bus_TRDY = '1' and last_word_block = '1') then -- ! En caso de que sea la última palabra del bloque que queremos mandar:
+	-- 	next_state  <= Inicio; -- ! Volvemos al estado inicial
+	-- 	MC_bus_Rd_Wr  <=  '1'; -- ! Seguimos quiriendo escribir en la cache
+	-- 	MC_tags_WE  <= '1'; -- ! Escribimos tambien el tag correspoendiente
+	-- 	MC_send_data <= '1'; -- ! Recibimos los datos del bus
+	-- 	Frame  <= '1'; -- ! Hasta que no acabemos de mandar datos no permitimos que nadie mas mande datos
+	-- 	ready  <= '1'; -- ! Como es la última, podemos asimilar que el bloque se ha mandado entero en ese ciclo
+	-- 	MC_WE0  <= '1' when (via_2_rpl  = '0') else '0'; -- ! Escribimos el dato en la via que corresponda
+	-- 	MC_WE1  <= '1' when (via_2_rpl = '1') else '0';
+	-- 	count_enable  <= '1'; -- ! Incrementamos el número de palabras que hemos traido a la cache
+	-- 	mux_origen  <= '1'; -- ! Queremos recibir del bus
+	-- 	last_word  <= '1'; -- ! Como es la ultima palabra avisamos 
+	-- elsif(state = Dirty_miss and bus_TRDY = '1') then -- ! En caso de que tengamos que actualizar la memoria principal y podamos en el mismo ciclo: 
+	-- 	next_state  <= Dirty_miss_send_data; -- ! Nos movemos al estado en el que movemos el bloque sucio a la memoria principal
+	-- 	send_dirty  <= '1'; -- ! Mandamos a MP la dirección del bloque sucio
+	-- 	Frame  <= '1'; -- ! Seguimos usando el bus
+	-- elsif(state  = Dirty_miss_send_data and bus_TRDY = '1') then -- ! En el momento en el que queramos actualizar la memoria principal
+	-- 	next_state  <= Dirty_miss_send_data; -- ! Seguimos en el mismo estado mientras no terminemos de actualizar la memoria principal
+	-- 	MC_send_data  <= '1'; -- ! Mandamos la palabra correspondiente
+	-- 	Frame  <= '1'; -- ! No queremos que nos interrumpan
+	-- elsif(state = Dirty_miss_send_data and bus_TRDY = '1' and last_word_block = '1') then
+	-- 	next_state  <= Clean_miss;
+	-- 	MC_send_data  <= '1';
+	-- 	Frame  <= '1';
+	-- 	Block_copied_back  <= '1';
+	-- 	Update_dirty  <= '1';
+	-- 	last_word <= '1';
+	-- 	inc_cb <= '1';
+	-- -- ! Casos de espera (cuando TRGT_ready sea 0)
+	-- elsif(state = Dirty_miss and bus_TRDY = '0') then
+	-- 	next_state  <= Dirty_miss;
+	-- 	Frame  <= '1';
+	-- elsif(state = Dirty_miss_send_data and bus_TRDY = '0') then
+	-- 	next_state  <=  Dirty_miss_send_data;
+	-- 	Frame  <= '1';
+	-- elsif(state = Clean_miss and bus_TRDY = '1') then
+	-- 	next_state <= Clean_miss;
+	-- 	Frame  <= '1';
+	-- elsif(state = Trans and Bus_DevSel = '1' and addr_non_cacheable = '1' and bus_TRDY = '0') then
+	-- 	next_state <= Trans;
+	-- 	Frame <= '1';
 
 	--Completar. �Qu� m�s hay que hacer en INICIO?. 
 	--Completar. �Qu� m�s estados ten�is?. 
