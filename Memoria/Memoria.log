@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.3.13)  5 MAY 2024 17:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.3.13)  9 MAY 2024 20:33
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -686,6 +686,43 @@ LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
 )
 \linenoamsmath@ams@eqpen=\count341
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryautomata.code.tex
+File: tikzlibraryautomata.code.tex 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryshapes.multipart.code.tex
+File: tikzlibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshape
+s.multipart.code.tex
+File: pgflibraryshapes.multipart.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodepartlowerbox=\box76
+\pgfnodeparttwobox=\box77
+\pgfnodepartthreebox=\box78
+\pgfnodepartfourbox=\box79
+\pgfnodeparttwentybox=\box80
+\pgfnodepartnineteenbox=\box81
+\pgfnodeparteighteenbox=\box82
+\pgfnodepartseventeenbox=\box83
+\pgfnodepartsixteenbox=\box84
+\pgfnodepartfifteenbox=\box85
+\pgfnodepartfourteenbox=\box86
+\pgfnodepartthirteenbox=\box87
+\pgfnodeparttwelvebox=\box88
+\pgfnodepartelevenbox=\box89
+\pgfnodeparttenbox=\box90
+\pgfnodepartninebox=\box91
+\pgfnodeparteightbox=\box92
+\pgfnodepartsevenbox=\box93
+\pgfnodepartsixbox=\box94
+\pgfnodepartfivebox=\box95
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
 runsystem(command -v pygmentize && touch Memoria.aex)...executed.
 
 runsystem(rm Memoria.aex)...executed.
@@ -697,25 +734,25 @@ LaTeX Warning: Label `fig:imagen' multiply defined.
 )
 \openout1 = `Memoria.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
  (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count342
 \scratchdimen=\dimen288
-\scratchbox=\box76
+\scratchbox=\box96
 \nofMPsegments=\count343
 \nofMParguments=\count344
 \everyMPshowfont=\toks44
@@ -781,7 +818,7 @@ e
 <assets/unizar.png, id=4, 261.6174pt x 219.7008pt>
 File: assets/unizar.png Graphic file (type png)
 <use assets/unizar.png>
-Package pdftex.def Info: assets/unizar.png  used on input line 57.
+Package pdftex.def Info: assets/unizar.png  used on input line 60.
 (pdftex.def)             Requested size: 552.86174pt x 464.37558pt.
 [1
 
@@ -804,7 +841,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 File: assets/Descomposicion_Direcciones_light.png Graphic file (type png)
 <use assets/Descomposicion_Direcciones_light.png>
 Package pdftex.def Info: assets/Descomposicion_Direcciones_light.png  used on i
-nput line 113.
+nput line 134.
 (pdftex.def)             Requested size: 354.86412pt x 250.84515pt.
 
 
@@ -854,7 +891,7 @@ usion: found PDF version <1.6>, but at most version <1.5> allowed
 File: assets/AOC2_2024_Esquemas_Proy2.pdf Graphic file (type pdf)
 <use assets/AOC2_2024_Esquemas_Proy2.pdf, page 1>
 Package pdftex.def Info: assets/AOC2_2024_Esquemas_Proy2.pdf , page1 used on in
-put line 188.
+put line 209.
 (pdftex.def)             Requested size: 354.86412pt x 266.1487pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -884,13 +921,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 18474 strings out of 476182
- 373577 string characters out of 5795595
- 1935975 words of memory out of 5000000
- 40135 multiletter control sequences out of 15000+600000
+ 19189 strings out of 476182
+ 397246 string characters out of 5795595
+ 1936975 words of memory out of 5000000
+ 40837 multiletter control sequences out of 15000+600000
  562578 words of font info for 51 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 84i,12n,93p,519b,707s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,12n,93p,519b,837s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/kali/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600p
 k></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
@@ -901,7 +938,7 @@ t/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
 ublic/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmti12.pfb>
-Output written on Memoria.pdf (9 pages, 436416 bytes).
+Output written on Memoria.pdf (9 pages, 437838 bytes).
 PDF statistics:
  113 PDF objects out of 1000 (max. 8388607)
  68 compressed objects within 1 object stream

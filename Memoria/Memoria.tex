@@ -14,6 +14,9 @@
 \usepackage{tabularx}
 \usepackage{changepage}
 \usepackage{amsmath}
+\usepackage{tikz}
+
+\usetikzlibrary{automata, positioning}
 
 %Definitions
 \definecolor{lightgray}{gray}{0.5}
@@ -100,6 +103,24 @@ memoria cache es más rápida que la memoria principal, hace que se reduzca el t
 Otra politica utilizada es la denominada \textbf{Fetch on Write Miss}, la cual consiste en que traemos a cache los datos en caso de que halla un fallo de escritura. Esto complementa
 muy bien la política copy back y hace que el rendimiento de la cache sea superior a otro conjuntos de politicas como Write Through junto a una política que implemente Fetch on Write miss.\cite{RivoireCacheWrite}\par
 
+
+
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+   \node[state] (q_0)   {Inicio}; 
+   \node[state] (q_1) [below=of q_0] {Req\_bus}; 
+   \node[state,accepting](q_2) [below=of q_1] {Transaction};
+    \path[->] 
+    (q_0) edge  node {hit = 0 or addr\_non\_cachable = 1} (q_1)
+          edge [loop above] node  {(RE = 1 or WE = 0) and hit = 1} ()
+          edge [loop left]  node {(RE = 1 or WE = 1) and unaligned = 1} ()
+          edge [loop right] node {RE = 1 and internal\_addr = 1} ()
+          edge [out=30, in=60, looseness=8] node[right=0.5cm] {WE = 1 and internal\_addr = 1} (q_0)
+    (q_1) edge  node  {1} (q_2)
+          edge [loop left] node {bus\_grnt = 0} ()
+    (q_2) edge [loop right] node {0,1} ();
+\end{tikzpicture}
+
+
 \newpage
 
 \section{Descomposición de la Dirección de la cache}
@@ -168,11 +189,11 @@ Información sobre este tipo de ataque: \cite{BackCache}.
 \hline
 \horasDepuracion{0}{0} \\
 \hline
-\horasEntenderEnunciado{2}{0} \\
+\horasEntenderEnunciado{2}{1} \\
 \hline
 \horasMemoria{2}{0} \\
 \hline
-\horasVhdl{1}{0} \\
+\horasVhdl{7}{3} \\
 \hline
 \end{tabularx}
 \end{table}
