@@ -48,30 +48,30 @@
     	wait for CLK_period*2;
 		reset <= '0';
 -- Es el mismo testbench que en la P1, pero con la parte de las IRQs, comentada.
--- Se puede volver a activar una vez que se haya comprobado que la nueva jerarquía funciona
--- 		wait for CLK_period*10;
--- 		-- Vamos a interrumpir en momentos distintos
--- 		EXT_IRQ <= '1';
--- 		if INT_ACK = '0' then 
--- 			wait until INT_ACK ='1'; 
--- 	  	end if;
--- 		EXT_IRQ <= '0';
--- 		wait for CLK_period*40;
--- 		EXT_IRQ <= '1';
--- 		if INT_ACK = '0' then 
--- 			wait until INT_ACK ='1'; 
--- 	  	end if;
--- 		EXT_IRQ <= '0';
--- 		wait for CLK_period*50;
--- 		EXT_IRQ <= '1';
--- 		EXT_IRQ <= '1';
--- 		if INT_ACK = '0' then 
--- 			wait until INT_ACK ='1'; 
--- 	  	end if;
--- 	  	EXT_IRQ <= '0';
--- 		wait for CLK_period*50;
--- 		-- Ahora interrumpimos sin parar
--- 		EXT_IRQ <= '1';
+-- Se puede volver a activar una vez que se haya comprobado que la nueva jerarquï¿½a funciona
+		wait for CLK_period*10;
+		-- Vamos a interrumpir en momentos distintos
+		EXT_IRQ <= '1';
+		if INT_ACK = '0' then 
+			wait until INT_ACK ='1'; 
+	  	end if;
+		EXT_IRQ <= '0';
+		wait for CLK_period*40;
+		EXT_IRQ <= '1';
+		if INT_ACK = '0' then 
+			wait until INT_ACK ='1'; 
+	  	end if;
+		EXT_IRQ <= '0';
+		wait for CLK_period*50;
+		EXT_IRQ <= '1';
+		EXT_IRQ <= '1';
+		if INT_ACK = '0' then 
+			wait until INT_ACK ='1'; 
+	  	end if;
+	  	EXT_IRQ <= '0';
+		wait for CLK_period*50;
+		-- Ahora interrumpimos sin parar
+		EXT_IRQ <= '0';
 		wait;
    end process;
 

@@ -103,6 +103,13 @@ de la memoria cache. Este hace que la carga de trabajo de entrada salida sea men
 memoria cache es más rápida que la memoria principal, hace que se reduzca el tiempo de ejecución de ciertas secuencias de instrucciones como bucles.\par
 Otra politica utilizada es la denominada \textbf{Fetch on Write Miss}, la cual consiste en que traemos a cache los datos en caso de que halla un fallo de escritura. Esto complementa
 muy bien la política copy back y hace que el rendimiento de la cache sea superior a otro conjuntos de politicas como Write Through junto a una política que implemente Fetch on Write miss.\cite{RivoireCacheWrite}\par
+\par 
+En resumen,esta unidad de control cuenta con 4 estados diferentes, el primero de ellos es inicio, donde gestionamos, tanto los hits como los errores de alineamiento. En el segundo estado
+, al cual hemos llamado bus request, lo que hacemos es pedir el bus, si devsel es 0, significa que la direccion no es de ninguna de las memorias conectadas y volveremos a inicio actualizando el error. 
+En caso de que algun servidor actualice devsel y lo recibamos a 1, pasamos al estado de transferencia, en el cual mandaremos la dirección a través del bus. 
+A partir de aquí ya diferenciaremos entre fallo limpio, fallo sucio, o que sea para la memoria Scratch. En caso de que sea un miss sucio, mandaremos la dirección en la cual querremos escribir el el bloque sucio de MC en memoria principal
+para acutalizar esta. Una vez se ha hecho la transferencia del bloque sucio, estaremos en un caso de fallo limpio entonces podemos ir al estado de fallo limpio donde se gestiona traer de memoria el bloque necesario.
+
 
 \begin{center}
 \begin{adjustbox}{left} 

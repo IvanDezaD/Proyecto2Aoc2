@@ -243,7 +243,6 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			--send_dirty  <= '1';
 		elsif(dirty_bit = '0') then
 			next_state  <= Clean_miss;
-			
 		end if;
 
 	-- ? Estado no cacheable
@@ -253,7 +252,8 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			last_word  <= '1';
 			Frame  <= '1';
 			MC_send_data  <= '1';
-			mux_output  <= "01";
+			MC_bus_Rd_Wr  <= '1' when WE = '1' else '0';
+			mux_output  <= "01" when WE = '0' else "00";
 		elsif(bus_TRDY = '0') then
 			next_state  <=  No_Cacheable;
 			Frame  <= '1';
