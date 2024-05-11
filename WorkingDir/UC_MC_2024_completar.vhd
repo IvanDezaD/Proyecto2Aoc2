@@ -236,11 +236,13 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		MC_send_addr_ctrl  <= '1';
 		if(Bus_DevSel = '0') then
 			next_state  <= Inicio;
+			next_error_state  <= memory_error;
 		elsif(addr_non_cacheable = '1') then
 			next_state  <= No_Cacheable;
+			MC_bus_Rd_Wr  <= '1' when WE = '1' else '0';
 		elsif(dirty_bit = '1') then
 			next_state  <= Dirty_miss;
-			--send_dirty  <= '1';
+			send_dirty  <= '1';
 		elsif(dirty_bit = '0') then
 			next_state  <= Clean_miss;
 		end if;
@@ -251,9 +253,11 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			next_state  <= Inicio;
 			last_word  <= '1';
 			Frame  <= '1';
-			MC_send_data  <= '1';
-			MC_bus_Rd_Wr  <= '1' when WE = '1' else '0';
+			MC_send_data  <= '1' when WE = '1' else '0';
+			-- MC_bus_Rd_Wr  <= '1' when WE = '1' else '0';
 			mux_output  <= "01";
+			mux_origen  <= '1';
+			ready  <= '1';	
 		elsif(bus_TRDY = '0') then
 			next_state  <=  No_Cacheable;
 			Frame  <= '1';

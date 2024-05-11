@@ -1,21 +1,22 @@
 [*]
 [*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Sat May 11 09:38:06 2024
+[*] Sat May 11 18:31:07 2024
 [*]
 [dumpfile] "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/test.ghw"
-[dumpfile_mtime] "Sat May 11 09:34:05 2024"
-[dumpfile_size] 230989
+[dumpfile_mtime] "Sat May 11 18:30:14 2024"
+[dumpfile_size] 125771
 [savefile] "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/testbench.gtkw"
-[timestart] 0
+[timestart] 1732800000
 [size] 1660 1016
-[pos] -105 -105
-*-24.798395 225000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -106 -106
+*-24.798395 452100000 385100000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.testbench.
 [treeopen] top.testbench.uut.
 [treeopen] top.testbench.uut.io_mem.
+[treeopen] top.testbench.uut.io_mem.controlador_md.md.
+[treeopen] top.testbench.uut.io_mem.controlador_md.md.ram.
 [treeopen] top.testbench.uut.io_mem.mc.
-[treeopen] top.testbench.uut.mips_core.
 [treeopen] top.testbench.uut.mips_core.exception_mng.exception_lr.
 [treeopen] top.testbench.uut.mips_core.exception_mng.status_reg.
 [treeopen] top.testbench.uut.mips_core.int_register_bank.reg_file.
@@ -74,6 +75,10 @@ top.testbench.uut.mips_core.valid_i_mem
 @28
 top.testbench.uut.io_mem.re
 top.testbench.uut.io_mem.we
+@22
+#{top.testbench.uut.io_mem.controlador_md.md.ram[40][31:0]} top.testbench.uut.io_mem.controlador_md.md.ram[40][31] top.testbench.uut.io_mem.controlador_md.md.ram[40][30] top.testbench.uut.io_mem.controlador_md.md.ram[40][29] top.testbench.uut.io_mem.controlador_md.md.ram[40][28] top.testbench.uut.io_mem.controlador_md.md.ram[40][27] top.testbench.uut.io_mem.controlador_md.md.ram[40][26] top.testbench.uut.io_mem.controlador_md.md.ram[40][25] top.testbench.uut.io_mem.controlador_md.md.ram[40][24] top.testbench.uut.io_mem.controlador_md.md.ram[40][23] top.testbench.uut.io_mem.controlador_md.md.ram[40][22] top.testbench.uut.io_mem.controlador_md.md.ram[40][21] top.testbench.uut.io_mem.controlador_md.md.ram[40][20] top.testbench.uut.io_mem.controlador_md.md.ram[40][19] top.testbench.uut.io_mem.controlador_md.md.ram[40][18] top.testbench.uut.io_mem.controlador_md.md.ram[40][17] top.testbench.uut.io_mem.controlador_md.md.ram[40][16] top.testbench.uut.io_mem.controlador_md.md.ram[40][15] top.testbench.uut.io_mem.controlador_md.md.ram[40][14] top.testbench.uut.io_mem.controlador_md.md.ram[40][13] top.testbench.uut.io_mem.controlador_md.md.ram[40][12] top.testbench.uut.io_mem.controlador_md.md.ram[40][11] top.testbench.uut.io_mem.controlador_md.md.ram[40][10] top.testbench.uut.io_mem.controlador_md.md.ram[40][9] top.testbench.uut.io_mem.controlador_md.md.ram[40][8] top.testbench.uut.io_mem.controlador_md.md.ram[40][7] top.testbench.uut.io_mem.controlador_md.md.ram[40][6] top.testbench.uut.io_mem.controlador_md.md.ram[40][5] top.testbench.uut.io_mem.controlador_md.md.ram[40][4] top.testbench.uut.io_mem.controlador_md.md.ram[40][3] top.testbench.uut.io_mem.controlador_md.md.ram[40][2] top.testbench.uut.io_mem.controlador_md.md.ram[40][1] top.testbench.uut.io_mem.controlador_md.md.ram[40][0]
+@23
+#{top.testbench.uut.io_mem.bus_data_addr[31:0]} top.testbench.uut.io_mem.bus_data_addr[31] top.testbench.uut.io_mem.bus_data_addr[30] top.testbench.uut.io_mem.bus_data_addr[29] top.testbench.uut.io_mem.bus_data_addr[28] top.testbench.uut.io_mem.bus_data_addr[27] top.testbench.uut.io_mem.bus_data_addr[26] top.testbench.uut.io_mem.bus_data_addr[25] top.testbench.uut.io_mem.bus_data_addr[24] top.testbench.uut.io_mem.bus_data_addr[23] top.testbench.uut.io_mem.bus_data_addr[22] top.testbench.uut.io_mem.bus_data_addr[21] top.testbench.uut.io_mem.bus_data_addr[20] top.testbench.uut.io_mem.bus_data_addr[19] top.testbench.uut.io_mem.bus_data_addr[18] top.testbench.uut.io_mem.bus_data_addr[17] top.testbench.uut.io_mem.bus_data_addr[16] top.testbench.uut.io_mem.bus_data_addr[15] top.testbench.uut.io_mem.bus_data_addr[14] top.testbench.uut.io_mem.bus_data_addr[13] top.testbench.uut.io_mem.bus_data_addr[12] top.testbench.uut.io_mem.bus_data_addr[11] top.testbench.uut.io_mem.bus_data_addr[10] top.testbench.uut.io_mem.bus_data_addr[9] top.testbench.uut.io_mem.bus_data_addr[8] top.testbench.uut.io_mem.bus_data_addr[7] top.testbench.uut.io_mem.bus_data_addr[6] top.testbench.uut.io_mem.bus_data_addr[5] top.testbench.uut.io_mem.bus_data_addr[4] top.testbench.uut.io_mem.bus_data_addr[3] top.testbench.uut.io_mem.bus_data_addr[2] top.testbench.uut.io_mem.bus_data_addr[1] top.testbench.uut.io_mem.bus_data_addr[0]
 @200
 ---- WB ---
 @28
@@ -81,11 +86,34 @@ top.testbench.uut.mips_core.valid_i_wb
 #{top.testbench.uut.mips_core.exception_mng.status_reg.data[1:0]} top.testbench.uut.mips_core.exception_mng.status_reg.data[1] top.testbench.uut.mips_core.exception_mng.status_reg.data[0]
 #{top.testbench.uut.mips_core.exception_mng.status_input[1:0]} top.testbench.uut.mips_core.exception_mng.status_input[1] top.testbench.uut.mips_core.exception_mng.status_input[0]
 top.testbench.uut.mips_core.exception_accepted
-@420
-top.testbench.uut.io_mem.mc.unidad_control.state
 @22
 #{top.testbench.uut.io_mem.mc.mc_din[31:0]} top.testbench.uut.io_mem.mc.mc_din[31] top.testbench.uut.io_mem.mc.mc_din[30] top.testbench.uut.io_mem.mc.mc_din[29] top.testbench.uut.io_mem.mc.mc_din[28] top.testbench.uut.io_mem.mc.mc_din[27] top.testbench.uut.io_mem.mc.mc_din[26] top.testbench.uut.io_mem.mc.mc_din[25] top.testbench.uut.io_mem.mc.mc_din[24] top.testbench.uut.io_mem.mc.mc_din[23] top.testbench.uut.io_mem.mc.mc_din[22] top.testbench.uut.io_mem.mc.mc_din[21] top.testbench.uut.io_mem.mc.mc_din[20] top.testbench.uut.io_mem.mc.mc_din[19] top.testbench.uut.io_mem.mc.mc_din[18] top.testbench.uut.io_mem.mc.mc_din[17] top.testbench.uut.io_mem.mc.mc_din[16] top.testbench.uut.io_mem.mc.mc_din[15] top.testbench.uut.io_mem.mc.mc_din[14] top.testbench.uut.io_mem.mc.mc_din[13] top.testbench.uut.io_mem.mc.mc_din[12] top.testbench.uut.io_mem.mc.mc_din[11] top.testbench.uut.io_mem.mc.mc_din[10] top.testbench.uut.io_mem.mc.mc_din[9] top.testbench.uut.io_mem.mc.mc_din[8] top.testbench.uut.io_mem.mc.mc_din[7] top.testbench.uut.io_mem.mc.mc_din[6] top.testbench.uut.io_mem.mc.mc_din[5] top.testbench.uut.io_mem.mc.mc_din[4] top.testbench.uut.io_mem.mc.mc_din[3] top.testbench.uut.io_mem.mc.mc_din[2] top.testbench.uut.io_mem.mc.mc_din[1] top.testbench.uut.io_mem.mc.mc_din[0]
-@23
 #{top.testbench.uut.io_mem.mc.mc_dout[31:0]} top.testbench.uut.io_mem.mc.mc_dout[31] top.testbench.uut.io_mem.mc.mc_dout[30] top.testbench.uut.io_mem.mc.mc_dout[29] top.testbench.uut.io_mem.mc.mc_dout[28] top.testbench.uut.io_mem.mc.mc_dout[27] top.testbench.uut.io_mem.mc.mc_dout[26] top.testbench.uut.io_mem.mc.mc_dout[25] top.testbench.uut.io_mem.mc.mc_dout[24] top.testbench.uut.io_mem.mc.mc_dout[23] top.testbench.uut.io_mem.mc.mc_dout[22] top.testbench.uut.io_mem.mc.mc_dout[21] top.testbench.uut.io_mem.mc.mc_dout[20] top.testbench.uut.io_mem.mc.mc_dout[19] top.testbench.uut.io_mem.mc.mc_dout[18] top.testbench.uut.io_mem.mc.mc_dout[17] top.testbench.uut.io_mem.mc.mc_dout[16] top.testbench.uut.io_mem.mc.mc_dout[15] top.testbench.uut.io_mem.mc.mc_dout[14] top.testbench.uut.io_mem.mc.mc_dout[13] top.testbench.uut.io_mem.mc.mc_dout[12] top.testbench.uut.io_mem.mc.mc_dout[11] top.testbench.uut.io_mem.mc.mc_dout[10] top.testbench.uut.io_mem.mc.mc_dout[9] top.testbench.uut.io_mem.mc.mc_dout[8] top.testbench.uut.io_mem.mc.mc_dout[7] top.testbench.uut.io_mem.mc.mc_dout[6] top.testbench.uut.io_mem.mc.mc_dout[5] top.testbench.uut.io_mem.mc.mc_dout[4] top.testbench.uut.io_mem.mc.mc_dout[3] top.testbench.uut.io_mem.mc.mc_dout[2] top.testbench.uut.io_mem.mc.mc_dout[1] top.testbench.uut.io_mem.mc.mc_dout[0]
+@28
+top.testbench.uut.io_mem.mc.unidad_control.ready
+top.testbench.uut.io_mem.mc.unidad_control.hit
+top.testbench.uut.io_mem.mc.unidad_control.re
+top.testbench.uut.io_mem.mc.unidad_control.we
+top.testbench.uut.io_mem.mc.update_dirty
+top.testbench.uut.io_mem.mc.we
+top.testbench.uut.io_mem.mc.hit0
+top.testbench.uut.io_mem.mc.hit1
+@420
+top.testbench.uut.io_mem.mc.unidad_control.next_error_state
+@28
+top.testbench.uut.io_mem.mc.unidad_control.unaligned
+top.testbench.uut.io_mem.mc.unidad_control.bus_grant
+@420
+top.testbench.uut.io_mem.mc.unidad_control.state
+@28
+top.testbench.uut.io_mem.mc.unidad_control.bus_req
+top.testbench.uut.io_mem.mc.unidad_control.mc_send_addr_ctrl
+top.testbench.uut.io_mem.mc.unidad_control.bus_devsel
+top.testbench.uut.io_mem.mc.update_dirty
+top.testbench.uut.io_mem.mc.unidad_control.send_dirty
+@22
+#{top.testbench.uut.io_mem.bus_data_addr[31:0]} top.testbench.uut.io_mem.bus_data_addr[31] top.testbench.uut.io_mem.bus_data_addr[30] top.testbench.uut.io_mem.bus_data_addr[29] top.testbench.uut.io_mem.bus_data_addr[28] top.testbench.uut.io_mem.bus_data_addr[27] top.testbench.uut.io_mem.bus_data_addr[26] top.testbench.uut.io_mem.bus_data_addr[25] top.testbench.uut.io_mem.bus_data_addr[24] top.testbench.uut.io_mem.bus_data_addr[23] top.testbench.uut.io_mem.bus_data_addr[22] top.testbench.uut.io_mem.bus_data_addr[21] top.testbench.uut.io_mem.bus_data_addr[20] top.testbench.uut.io_mem.bus_data_addr[19] top.testbench.uut.io_mem.bus_data_addr[18] top.testbench.uut.io_mem.bus_data_addr[17] top.testbench.uut.io_mem.bus_data_addr[16] top.testbench.uut.io_mem.bus_data_addr[15] top.testbench.uut.io_mem.bus_data_addr[14] top.testbench.uut.io_mem.bus_data_addr[13] top.testbench.uut.io_mem.bus_data_addr[12] top.testbench.uut.io_mem.bus_data_addr[11] top.testbench.uut.io_mem.bus_data_addr[10] top.testbench.uut.io_mem.bus_data_addr[9] top.testbench.uut.io_mem.bus_data_addr[8] top.testbench.uut.io_mem.bus_data_addr[7] top.testbench.uut.io_mem.bus_data_addr[6] top.testbench.uut.io_mem.bus_data_addr[5] top.testbench.uut.io_mem.bus_data_addr[4] top.testbench.uut.io_mem.bus_data_addr[3] top.testbench.uut.io_mem.bus_data_addr[2] top.testbench.uut.io_mem.bus_data_addr[1] top.testbench.uut.io_mem.bus_data_addr[0]
+@28
+top.testbench.uut.io_mem.mc.unidad_control.dirty_bit
 [pattern_trace] 1
 [pattern_trace] 0

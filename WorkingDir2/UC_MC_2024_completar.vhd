@@ -221,26 +221,29 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 		inc_m  <= '1';  -- ! Indicamos que ha habido un fallo en la cache al no haber hit (hit = '0') 
 		
 	-- ? Estado de Arbitraje
-	elsif(state = Bus_Request) then --!  En caso de que no nos llegue el bus: 
-		if(Bus_grant = '0') then
-			next_state  <= Bus_Request;
-			Bus_req  <= '1';
-		elsif(Bus_grant = '1') then
-			next_state  <= Trans;
-			Bus_req <= '1';
+	elsif(state = Bus_Request) then --! Estado en el que comprobamos la conexión con el bus
+		if(Bus_grant = '0') then   -- ! En caso de que no se nos conceda el bus:
+			next_state  <= Bus_Request;  -- ! Seguimos comprobando el bus (seguimos en el mismo estado)
+			Bus_req  <= '1';  -- ! Volvemos a solicitar el bus
+		elsif(Bus_grant = '1') then  -- ! En caso de que si que se nos haya concedido el bus: 
+			next_state  <= Trans;  -- ! Nos movemos al estado de transferencia de datos
+			Bus_req <= '1';  
 		end if;
 
 	-- ? Estado Transfer
-	elsif(state = Trans) then
-		Frame  <= '1';
-		MC_send_addr_ctrl  <= '1';
-		if(Bus_DevSel = '0') then
-			next_state  <= Inicio;
-		elsif(addr_non_cacheable = '1') then
-			next_state  <= No_Cacheable;
+	elsif(state = Trans) then  -- ! Estado en el que iniciamos la transferencia de datos 
+		Frame  <= '1';   -- ! No queremos que nadie nos interrumpa
+		MC_send_addr_ctrl  <= '1';  -- ! Mandamos la dirección y las señales de control al bus 
+		if(Bus_DevSel = '0') then  -- ! En caso de que no  tengamos el bus, 
+			next_state  <= Inicio;  -- ! Volvemos al estado inicial 
+			next_error_state  <= memory_error;  -- ! Comunicamos que ha habido un error
+		elsif(addr_non_cacheable = '1') then  -- ! En caso de que sea de la Scratch,
+			next_state  <= No_Cacheable;  -- ! Nos movemos a un estado para gestionar el acceso
+			MC_bus_Rd_Wr  <= '1' when WE = '1' else '0'; -- ! En caso de que queramos 
 		elsif(dirty_bit = '1') then
 			next_state  <= Dirty_miss;
-			--send_dirty  <= '1';
+			send_dirty  <= '1';
+			MC_bus_Rd_Wr  <= '1';
 		elsif(dirty_bit = '0') then
 			next_state  <= Clean_miss;
 		end if;
@@ -251,9 +254,11 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			next_state  <= Inicio;
 			last_word  <= '1';
 			Frame  <= '1';
-			MC_send_data  <= '1';
-			MC_bus_Rd_Wr  <= '1' when WE = '1' else '0';
-			mux_output  <= "01" when WE = '0' else "00";
+			MC_send_data  <= '1' when WE = '1' else '0';
+			-- MC_bus_Rd_Wr  <= '1' when WE = '1' else '0';
+			mux_output  <= "01";
+			mux_origen  <= '1';
+			ready  <= '1';	
 		elsif(bus_TRDY = '0') then
 			next_state  <=  No_Cacheable;
 			Frame  <= '1';
@@ -269,7 +274,7 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 			MC_WE0  <= '1' when (via_2_rpl = '0') else '0';
 			MC_WE1  <= '1' when (via_2_rpl = '1') else '0';
 			count_enable  <= '1';
-			MC_bus_Rd_Wr  <= '1'; 
+			--MC_bus_Rd_Wr  <= '1'; 
 
 		elsif(bus_TRDY = '1' and last_word_block = '1') then
 			next_state  <= Inicio;
@@ -292,26 +297,33 @@ Mem_ERROR <= '1' when (error_state = memory_error) else '0';
 	elsif(state = Dirty_miss) then
 		if(bus_TRDY = '1') then
 			next_state  <= Dirty_miss_send_data;
-			send_dirty  <= '1';
 			Frame  <= '1';
+			MC_send_data  <= '1';
+			count_enable  <= '1';
 		elsif(bus_TRDY = '0') then
 			next_state  <= Dirty_miss;
 			Frame  <= '1';
 		end if;
+
 	elsif(state = Dirty_miss_send_data) then
 		if(bus_TRDY = '1' and last_word_block = '0') then
 			next_state  <= Dirty_miss_send_data;
 			MC_send_data <= '1';
 			Frame  <= '1';
-			MC_bus_Rd_Wr  <= '0';
-		elsif(bus_TRDY = '0' and last_word_block = '1') then
+			count_enable  <= '1';
+			mux_origen  <= '1';
+		elsif(bus_TRDY = '1' and last_word_block = '1') then
 			next_state <= Bus_Request;
 			MC_send_data  <= '1';
 			Frame  <= '1';
 			Block_copied_back  <= '1';
 			Update_dirty  <= '1';
 			inc_cb  <= '1';
-			MC_bus_Rd_Wr  <= '0';
+			mux_origen  <= '1';
+			count_enable  <= '1';
+			elsif(bus_TRDY = '0') then
+				next_state  <= Dirty_miss_send_data;
+				Frame  <= '1';
 		end if;
 		
 	-- elsif(state = Trans and Bus_DevSel = '1' and addr_non_cacheable = '1' and bus_TRDY = '1') then -- ! Asumimos que se puede hacer todo en la transicion de la vuelta a inicio. En caso de que algun eslavo reconozca la dirección pero no se pueda meter en la cache: 

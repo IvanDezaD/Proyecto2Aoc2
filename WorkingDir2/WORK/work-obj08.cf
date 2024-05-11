@@ -53,9 +53,9 @@ file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "REGISTER.vhd" "bb
 file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "UA_2024_completar.vhd" "57eaa44bcb5017f7d9dcc3eba0c2e3b121e0d585" "20240510151039.978":
   entity ua at 6( 270) + 0 on 61;
   architecture behavioral of ua at 24( 877) + 0 on 62;
-file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "UC_MC_2024_completar.vhd" "39eefd08fe8c9dfc5441644c94a4c466d92fdfd5" "20240511103053.007":
-  entity uc_mc at 20( 602) + 0 on 139;
-  architecture behavioral of uc_mc at 80( 4669) + 0 on 140;
+file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "UC_MC_2024_completar.vhd" "2398c69bb266056745ec99a83f528349b41f27e2" "20240511192051.971":
+  entity uc_mc at 20( 602) + 0 on 255;
+  architecture behavioral of uc_mc at 80( 4669) + 0 on 256;
 file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "UC_Mips_2024_completar.vhd" "091e1da56fe0bb545937794b759aad94675edd95" "20240510151039.805":
   entity uc at 6( 271) + 0 on 55;
   architecture behavioral of uc at 38( 1518) + 0 on 56;
@@ -83,12 +83,12 @@ file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "counter_2bits.vhd
 file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "memoriaRAM_64_32_enable.vhd" "6eac88fc48db01c27a01cd07eef31b662a1f74de" "20240510151039.509":
   entity ram_64_32 at 20( 489) + 0 on 41;
   architecture behavioral of ram_64_32 at 44( 1359) + 0 on 42;
-file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "memoriaRAM_I_test.bucle_lectura_2024.P2.vhd" "48aa32da7fa5a9f49b05a421559ecf93db40c45b" "20240511101400.541":
-  entity memoriaram_i at 20( 491) + 0 on 135;
-  architecture behavioral of memoriaram_i at 41( 1237) + 0 on 136;
-file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "memoriaRAM_test.bucle_2024.P2.vhd" "29d7ada957b29fbe4f550941e016a5389266beb9" "20240511101400.487":
-  entity ram_128_32 at 20( 489) + 0 on 133;
-  architecture behavioral of ram_128_32 at 44( 1363) + 0 on 134;
+file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "memoriaRAM_I_test.bucle_lectura_2024.P2.vhd" "463a42aa62ed7467e970fe3f0c32df17054eae76" "20240511175730.829":
+  entity memoriaram_i at 20( 491) + 0 on 217;
+  architecture behavioral of memoriaram_i at 41( 1237) + 0 on 218;
+file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "memoriaRAM_test.bucle_2024.P2.vhd" "0cb1ab90f2037f57596568d83808e7ea05648f32" "20240511175337.149":
+  entity ram_128_32 at 20( 489) + 0 on 213;
+  architecture behavioral of ram_128_32 at 44( 1363) + 0 on 214;
 file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "mux2_1.vhd" "16c03f03addbb8a3f3dad9a1da21f497d0aa4854" "20240510151040.063":
   entity mux2_1 at 20( 493) + 0 on 65;
   architecture behavioral of mux2_1 at 39( 1069) + 0 on 66;
@@ -98,6 +98,6 @@ file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "mux2_5bits.vhd" "
 file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "mux4_1.vhd" "77e61d225e8903760cce4b3e7e6390eff88901d5" "20240510151040.026":
   entity mux4_1 at 20( 493) + 0 on 63;
   architecture behavioral of mux4_1 at 41( 1197) + 0 on 64;
-file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "testbench_AOC2_SoC.vhd" "af44b872cc3e7451c8b173da238f458abb202879" "20240511103052.954":
-  entity testbench at 3( 26) + 2 on 137;
-  architecture behavior of testbench at 10( 149) + 2 on 138;
+file "/home/kali/Documents/ClassShit/AOC2/Proy2/WorkingDir2/" "testbench_AOC2_SoC.vhd" "af44b872cc3e7451c8b173da238f458abb202879" "20240511172000.399":
+  entity testbench at 3( 26) + 2 on 205;
+  architecture behavior of testbench at 10( 149) + 2 on 206;
